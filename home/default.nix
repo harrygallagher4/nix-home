@@ -30,7 +30,7 @@ rec {
     ripgrep
     rnix-lsp
     shfmt
-    zulip-term
+    # zulip-term
   ];
 
   home = {
