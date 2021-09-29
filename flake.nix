@@ -86,6 +86,7 @@
     {
       darwinConfigurations = {
         "harrys-mbp" = darwin.lib.darwinSystem {
+          system = "x86_64-darwin";
           inputs = { inherit darwin nixpkgs; };
           modules = mkDarwinModules {
             user = "harry";
