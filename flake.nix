@@ -22,7 +22,7 @@
 
     spacebar = {
       url = github:cmacrae/spacebar/v1.3.0;
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     flake-utils = { 
@@ -67,6 +67,7 @@
           home-manager.darwinModules.home-manager
           {
             nixpkgs.overlays = [ neovim.overlay spacebar.overlay ];
+            nixpkgs.config.allowUnfree = true;
             # nix.nixPath = [ { nixpkgs = nixpkgs; } ];
           }
           ./config/darwin.nix
