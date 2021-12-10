@@ -1,0 +1,4 @@
+#!zsh
+
+git tag | sort --reverse --numeric-sort --field-separator="." --key=1,1 --key=2,2
+
