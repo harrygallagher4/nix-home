@@ -6,7 +6,6 @@ export ENHANCD_FILTER="fzf"
 export FZF_DEFAULT_COMMAND='fd -H --type f'
 export GHQ_ROOT="$HOME/repos/"
 export GOPATH="$HOME/.go"
-export HOMEBREW_GITHUB_API_TOKEN="8cf2bbece85abd704e7742591aa662439c4a0668"
 # export HOMEBREW_GITHUB_API_TOKEN="$(security find-generic-password -w -a $LOGNAME -s homebrew_github_api_token 2>/dev/null || echo -n '')"
 export HOMEBREW_NO_AUTO_UPDATE=1
 export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
