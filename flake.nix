@@ -2,8 +2,8 @@
   description = "dotfiles";
 
   inputs = {
-    # nixpkgs.url = github:nixos/nixpkgs/nixpkgs-unstable;
-    nixpkgs.url = github:nixos/nixpkgs/nixpkgs-21.11-darwin;
+    nixpkgs.url = github:nixos/nixpkgs/nixpkgs-unstable;
+    # nixpkgs.url = github:nixos/nixpkgs/nixpkgs-21.11-darwin;
 
     darwin = {
       url = github:lnl7/nix-darwin/master;
@@ -12,28 +12,22 @@
 
     home-manager = {
       url = github:nix-community/home-manager/release-21.11;
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     neovim = {
       url = github:nix-community/neovim-nightly-overlay;
-      # url = github:/neovim/neovim/master?dir=contrib;
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     spacebar = {
       url = github:cmacrae/spacebar/v1.3.0;
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     flake-utils = { 
       url = github:numtide/flake-utils;
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nur = {
       url = github:nix-community/NUR;
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
