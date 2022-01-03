@@ -23,7 +23,7 @@ in
 
     variables = {
       # https://github.com/nix-community/home-manager/issues/423
-      TERMINFO_DIRS = "/Applications/kitty.app/Contents/Resources/terminfo";
+      TERMINFO_DIRS = "/Applications/kitty.app/Contents/Resources/terminfo/";
     };
   };
 
