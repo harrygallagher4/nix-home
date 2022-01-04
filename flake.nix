@@ -63,19 +63,19 @@
           {
             nixpkgs.overlays = [ neovim.overlay spacebar.overlay ];
             nixpkgs.config.allowUnfree = true;
-            # nix.nixPath = [ { nixpkgs = nixpkgs; } ];
           }
           ./config/darwin.nix
+          {
+            nix.nixPath = {
+              inherit nixpkgs darwin;
+            };
+          }
           # hostConfig
           {
             users.users.${user}.home = "/Users/${user}";
             home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
             home-manager.users.${user} = homeManagerConfig args;
-            # home-manager.useUserPackages = true;
-            # nixpkgs = nixpkgsConfig;
-            # nix.nixPath = {
-            #   nixpkgs = "$HOME/.config/nixpkgs/nixpkgs.nix";
-            # };
           }
         ];
     in
