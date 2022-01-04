@@ -23,11 +23,15 @@ eval "$(hub alias -s)"
 PATH="$PATH:$ASDF_DIR/bin"
 source "$ASDF_DIR/lib/asdf.sh"
 
-{
+# kitty + complete setup zsh | source /dev/stdin
+if test -n "$KITTY_INSTALLATION_DIR"; then
   .zinit-tmp-subst-on "compdef"
-  kitty + complete setup zsh | source /dev/stdin
+  export KITTY_SHELL_INTEGRATION="enabled"
+  autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
+  kitty-integration
+  unfunction kitty-integration
   .zinit-tmp-subst-off "compdef"
-}
+fi
 
 _java_path="$JAVA_HOME/bin"
 export PATH="${PATH//$_java_path:/}"
