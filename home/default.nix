@@ -20,17 +20,14 @@ rec {
     gnugrep
     gnused
     luajit
-    # neovim-remote
+    mdcat
     niv
     nixpkgs-fmt
-    # nodePackages.node2nix
-    # nodePackages.vim-language-server
     pet
     renameutils
     ripgrep
     rnix-lsp
     shfmt
-    # zulip-term
   ];
 
   home = {
