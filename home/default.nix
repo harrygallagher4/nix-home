@@ -70,28 +70,23 @@ rec {
     lf = {
       enable = true;
       previewer.source = ./lf-previewer.sh;
-
       settings = {
         ratios = "4:6:7";
         icons = true;
         incsearch = true;
       };
-
       commands = {
         open = "&nvr --nostart -o $fx";
         ncd = ''&nvr +"cd $PWD"'';
       };
-
       keybindings = {
         "<c-n>" = "ncd";
         "D" = "delete";
       };
-
       cmdKeybindings = {
         "<tab>" = "cmd-menu-complete";
         "<s-tab>" = "cmd-menu-complete-back";
       };
-
       extraConfig = ''
         set hiddenfiles .*:!.config:!.zshrc:!.zshenv:!.zfunc:!.editorconfig:!.nix
       '';
@@ -143,7 +138,6 @@ rec {
 
   xdg = {
     enable = true;
-
     configHome = "${home_directory}/.config";
     dataHome = "${home_directory}/.local/share";
     cacheHome = "${home_directory}/.cache";
