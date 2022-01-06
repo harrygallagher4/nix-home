@@ -11,27 +11,16 @@
     };
 
     home-manager = {
-      url = github:nix-community/home-manager/release-21.11;
+      url = github:nix-community/home-manager;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    neovim = {
-      url = github:nix-community/neovim-nightly-overlay;
-    };
-
-    spacebar = {
-      url = github:cmacrae/spacebar/v1.3.0;
-    };
-
-    flake-utils = { 
-      url = github:numtide/flake-utils;
-    };
-
-    nur = {
-      url = github:nix-community/NUR;
-    };
+    neovim.url = github:nix-community/neovim-nightly-overlay;
+    flake-utils.url = github:numtide/flake-utils;
+    nur.url = github:nix-community/NUR;
   };
 
-  outputs = inputs @ { self, nixpkgs, darwin, home-manager, neovim, flake-utils, nur, spacebar, ... }:
+  outputs = inputs @ { self, nixpkgs, darwin, home-manager, neovim, flake-utils, nur, ... }:
     let
       nixpkgsConfig = with inputs; {
         config = {
@@ -61,13 +50,14 @@
         }: [
           home-manager.darwinModules.home-manager
           {
-            nixpkgs.overlays = [ neovim.overlay spacebar.overlay ];
+            nixpkgs.overlays = [ neovim.overlay ];
             nixpkgs.config.allowUnfree = true;
           }
           ./config/darwin.nix
           {
             nix.nixPath = {
               inherit nixpkgs darwin;
+              darwin-config = ./config/darwin.nix;
             };
           }
           # hostConfig

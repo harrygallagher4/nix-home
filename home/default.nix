@@ -52,7 +52,6 @@ rec {
       stdlib = builtins.readFile ./direnvrc;
       nix-direnv = {
         enable = true;
-        enableFlakes = true;
       };
     }; #// programs.direnv
 
