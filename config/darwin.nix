@@ -14,7 +14,7 @@ in
       # pkgs.nixFlakes
       pkgs.tree-sitter
       # pkgs.nur.repos.mic92.hello-nur
-      # pkgs.kitty
+      pkgs.kitty
     ];
 
     shells = [
