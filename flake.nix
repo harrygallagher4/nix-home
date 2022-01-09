@@ -18,9 +18,11 @@
     neovim.url = github:nix-community/neovim-nightly-overlay;
     flake-utils.url = github:numtide/flake-utils;
     nur.url = github:nix-community/NUR;
+    kitty.url = github:kovidgoyal/kitty;
+    kitty.flake = false;
   };
 
-  outputs = { self, nixpkgs, darwin, home-manager, neovim, flake-utils, nur, ... } @ inputs:
+  outputs = { self, nixpkgs, darwin, home-manager, neovim, flake-utils, nur, kitty, ... } @ inputs:
     let
       nixpkgsConfig = with inputs; {
         config = {
@@ -41,6 +43,16 @@
           ];
         };
 
+      kittyOverlay = self: super: {
+        kitty = super.kitty.overrideAttrs ( old: {
+          name = "kitty-nightly";
+          version = "${old.version}-nightly";
+          src = kitty;
+          # I'd like to find a way to use kitty's shell.nix for this
+          buildInputs = old.buildInputs ++ [ super.librsync ];
+        });
+      };
+
       mkDarwinModules =
         args @
         { user
@@ -54,7 +66,7 @@
               inherit nixpkgs darwin;
               darwin-config = ./config/darwin.nix;
             };
-            nixpkgs.overlays = [ neovim.overlay ];
+            nixpkgs.overlays = [ neovim.overlay kittyOverlay ];
             nixpkgs.config.allowUnfree = true;
           }
           ./config/darwin.nix
