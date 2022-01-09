@@ -12,6 +12,7 @@ source "$HOME/.zinit/bin/zinit.zsh"
 zstyle ":completion:*:*:git:*" script "/Users/harry/.zinit/snippets/OMZP::gitfast/git-completion.bash"
 zinit ice svn
 zinit snippet OMZP::gitfast
+zinit snippet 'OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh'
 
 zstyle ":history-search-multi-word" page-size "14"
 zstyle ":history-search-multi-word" highlight-color "fg=yellow,bold"
@@ -42,6 +43,9 @@ zinit light zdharma-continuum/zsh-diff-so-fancy
 
 zinit ice as"program" src"init.sh"
 zinit light b4b4r07/enhancd
+
+zinit wait'3' lucid light-mode for \
+  "$HOME/.local/share/zsecrets"
 
 ##
 ## END initExtraBeforeCompInit
