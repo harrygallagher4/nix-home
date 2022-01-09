@@ -20,7 +20,7 @@
     nur.url = github:nix-community/NUR;
   };
 
-  outputs = inputs @ { self, nixpkgs, darwin, home-manager, neovim, flake-utils, nur, ... }:
+  outputs = { self, nixpkgs, darwin, home-manager, neovim, flake-utils, nur, ... } @ inputs:
     let
       nixpkgsConfig = with inputs; {
         config = {
@@ -50,16 +50,14 @@
         }: [
           home-manager.darwinModules.home-manager
           {
-            nixpkgs.overlays = [ neovim.overlay ];
-            nixpkgs.config.allowUnfree = true;
-          }
-          ./config/darwin.nix
-          {
             nix.nixPath = {
               inherit nixpkgs darwin;
               darwin-config = ./config/darwin.nix;
             };
+            nixpkgs.overlays = [ neovim.overlay ];
+            nixpkgs.config.allowUnfree = true;
           }
+          ./config/darwin.nix
           # hostConfig
           {
             users.users.${user}.home = "/Users/${user}";
