@@ -44,18 +44,23 @@
         };
 
       # kittyShell = nixpkgs.callPackage "${kitty}/shell.nix" {};
+      union = z: s: z ++ builtins.filter (e: !builtins.elem e z) s;
 
       kittyOverlay = self: super: {
         kitty = super.kitty.overrideAttrs ( old:
         let
           kittyShell = super.callPackage "${kitty}/shell.nix" {};
-        in
-        {
+        in {
           name = "kitty-nightly";
           version = "${old.version}-nightly";
           src = kitty;
+          buildInputs = union old.buildInputs kittyShell.buildInputs;
+          nativeBuildInputs = union old.nativeBuildInputs kittyShell.nativeBuildInputs;
+          propagatedBuildInputs = union old.propagatedBuildInputs kittyShell.propagatedBuildInputs;
+          # buildInputs = kittyShell.buildInputs;
+          # nativeBuildInputs = old.nativeBuildInputs ++ kittyShell.nativeBuildInputs;
+          # propagatedBuildInputs = kittyShell.propagatedBuildInputs;
           # I'd like to find a way to use kitty's shell.nix for this
-          buildInputs = kittyShell.buildInputs;
           # buildInputs = old.buildInputs ++ [ super.librsync ];
         });
       };
