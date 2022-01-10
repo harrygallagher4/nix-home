@@ -22,58 +22,48 @@
     kitty.flake = false;
   };
 
-  outputs = { self, nixpkgs, darwin, home-manager, neovim, flake-utils, nur, kitty, ... } @ inputs:
+  outputs = { nixpkgs, darwin, home-manager, neovim, kitty, ... } @ inputs:
     let
-      nixpkgsConfig = with inputs; {
-        config = {
-          allowUnfree = true;
-        };
-        # overlays = self.overlays;
-        overlays = [ nur.overlay ];
-      };
-
-      homeManagerConfig =
-        { user
-        , userConfig ? ./home + "/user-${user}.nix"
-        , ...
-        }: {
-          imports = [
-            userConfig
-            ./home
-          ];
-        };
-
       union = z: s: z ++ builtins.filter (e: !builtins.elem e z) s;
 
       kittyOverlay = self: super: {
         kitty = super.kitty.overrideAttrs ( old:
         let
-          kittyShell = super.callPackage "${kitty}/shell.nix" {};
+          kittyShell = super.callPackage "${kitty}/shell.nix" {}; # is this safe? who knows
         in {
-          name = "kitty-nightly";
-          version = "${old.version}-nightly";
+          name = "${old.name}-nightly"; # this should always be kitty-nightly but whatever
+          version = "${old.version}-nightly"; # eventually I'd like to generate this from kitty/constants.py:25
           src = kitty;
+          # this could pottentially lead to a few unnecessary inputs but considering
+          # my alternative way of installing kitty is just using nix-shell I'd be
+          # building them anyway
           buildInputs = union old.buildInputs kittyShell.buildInputs;
           nativeBuildInputs = union old.nativeBuildInputs kittyShell.nativeBuildInputs;
           propagatedBuildInputs = union old.propagatedBuildInputs kittyShell.propagatedBuildInputs;
+          outputs = union old.outputs ["shell_integration"]; # nixpkgs#153999
+          # https://github.com/NixOS/nixpkgs/pull/153999
         });
       };
 
+      nixpkgsConfig = {
+        config.allowUnfree = true;
+        overlays = [ neovim.overlay kittyOverlay ];
+      };
+
+      homeManagerConfig =
+        { user, userConfig ? ./home+"/user-${user}.nix", ... }: {
+          imports = [ userConfig ./home ];
+        };
+
       mkDarwinModules =
-        args @
-        { user
-        , host
-        , hostConfig ? ./config + "/host-${host}.nix"
-        , ...
-        }: [
+        { user, host, hostConfig ? ./config+"/host-${host}.nix", ... } @ args: [
           home-manager.darwinModules.home-manager
           {
             nix.nixPath = {
               inherit nixpkgs darwin;
               darwin-config = ./config/darwin.nix;
             };
-            nixpkgs.overlays = [ neovim.overlay kittyOverlay ];
-            nixpkgs.config.allowUnfree = true;
+            nixpkgs = nixpkgsConfig;
           }
           ./config/darwin.nix
           # hostConfig
@@ -97,10 +87,8 @@
         };
       };
 
-      darwinModules = { };
-
-      homeManagerModules = { };
-
+      # this is only here because I stole this file from someone else
+      # maybe in the future I'll use it
       overlays =
         let path = ./overlays; in
         with builtins;
