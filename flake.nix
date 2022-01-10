@@ -40,7 +40,8 @@
           buildInputs = union old.buildInputs kittyShell.buildInputs;
           nativeBuildInputs = union old.nativeBuildInputs kittyShell.nativeBuildInputs;
           propagatedBuildInputs = union old.propagatedBuildInputs kittyShell.propagatedBuildInputs;
-          outputs = union old.outputs ["shell_integration"]; # nixpkgs#153999
+          # can't just add this here, changes to the build phase are needed
+          # outputs = union old.outputs ["shell_integration"]; # nixpkgs#153999
           # https://github.com/NixOS/nixpkgs/pull/153999
         });
       };
@@ -51,12 +52,12 @@
       };
 
       homeManagerConfig =
-        { user, userConfig ? ./home+"/user-${user}.nix", ... }: {
+        { user, userConfig ? ./home + "/user-${user}.nix", ... }: {
           imports = [ userConfig ./home ];
         };
 
       mkDarwinModules =
-        { user, host, hostConfig ? ./config+"/host-${host}.nix", ... } @ args: [
+        { user, host, hostConfig ? ./config + "/host-${host}.nix", ... } @ args: [
           home-manager.darwinModules.home-manager
           {
             nix.nixPath = {
